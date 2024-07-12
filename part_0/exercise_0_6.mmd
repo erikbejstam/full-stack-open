@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    server-->>browser: 201 Created
+    deactivate server
+
+Note right of server: When user presses "save" button the onsubmit function is run and prevents the <br> default HTML post request, creates the note, uses redrawNotes to append the note to the already <br> existing notes the code locally updates the list of notes, and then calls the sendToServer function to <br> send the JSON data containing the note to the server.  
