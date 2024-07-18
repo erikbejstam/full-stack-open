@@ -4,7 +4,7 @@ const Header = ({header}) => <h1>{header}</h1>
 
 const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
 
-const Statistic = ({text, nClicks}) => <div>{text} {nClicks}</div>
+const Statistic = ({text, value}) => <div>{text} {value}</div>
 
 
 const App = () => {
@@ -28,6 +28,10 @@ const App = () => {
     setBad(updatedBad)
   }
 
+  const all = good + neutral + bad
+  const average = (good + bad*(-1)) / (good + neutral + bad)
+  const positive = good / (good + neutral + bad)
+
   return (
     <div>
       <Header header="give feedback"/>
@@ -38,10 +42,12 @@ const App = () => {
 
       <Header header="statistics"/>
 
-      <Statistic text="good" nClicks={good}/> 
-      <Statistic text="neutral" nClicks={neutral}/>
-      <Statistic text="bad" nClicks={bad}/>
-
+      <Statistic text="good" value={good}/> 
+      <Statistic text="neutral" value={neutral}/>
+      <Statistic text="bad" value={bad}/>
+      <Statistic text="all" value={all}/>
+      <Statistic text="average" value={average}/>
+      <Statistic text="positive" value={positive*100 + ' %'}/>
     </div>
   )
 }
