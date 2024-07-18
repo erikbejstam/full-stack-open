@@ -4,20 +4,30 @@ const Header = ({header}) => <h1>{header}</h1>
 
 const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
 
-const StatisticLine = ({text, value}) => <div>{text} {value}</div>
+const StatisticLine = ({text, value}) => {
+  return(
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+  )}
 
 const Statistics = ({statistics}) => {
   const {lines} = statistics
 
   const listItems  = lines.map(statistic => <StatisticLine key={statistic.text} text={statistic.text} value={statistic.value}/>)
   return(
-    <div>
+    <>
       <h1>statistics</h1>
       {lines[3].value ? 
-        listItems
+        <table>
+          <tbody>
+            {listItems}
+          </tbody>
+        </table>
         : <div> No feedback given</div> 
       }
-    </div>
+    </>
   )
 }
 
@@ -59,7 +69,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <>
       <Header header="give feedback"/>
 
       <Button text="good" onClick={() => handleGoodClick()}/>
@@ -67,7 +77,7 @@ const App = () => {
       <Button text="bad" onClick={() => handleBadClick()}/>
 
       <Statistics statistics={statistics}/>
-    </div>
+    </>
   )
 }
 
