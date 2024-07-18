@@ -4,12 +4,12 @@ const Header = ({header}) => <h1>{header}</h1>
 
 const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
 
-const Statistic = ({text, value}) => <div>{text} {value}</div>
+const StatisticLine = ({text, value}) => <div>{text} {value}</div>
 
 const Statistics = ({statistics}) => {
   const {lines} = statistics
 
-  const listItems  = lines.map(statistic => <Statistic key={statistic.text} text={statistic.text} value={statistic.value}/>)
+  const listItems  = lines.map(statisticLine => <StatisticLine key={statistic.text} text={statistic.text} value={statistic.value}/>)
   console.log(lines[3].value)
   return(
     <div>
