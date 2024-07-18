@@ -6,6 +6,18 @@ const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
 
 const Statistic = ({text, value}) => <div>{text} {value}</div>
 
+const Statistics = ({statistics}) => {
+  const {lines} = statistics
+
+  const listItems  = lines.map(statistic => <Statistic key={statistic.text} text={statistic.text} value={statistic.value}/>)
+  return(
+    <div>
+      <h1>statistics</h1>
+      {listItems}
+    </div>
+  )
+}
+
 
 const App = () => {
   // save clicks of each button to its own state
@@ -29,8 +41,19 @@ const App = () => {
   }
 
   const all = good + neutral + bad
-  const average = (good + bad*(-1)) / (good + neutral + bad)
-  const positive = good / (good + neutral + bad)
+  const average = all ? (good - bad) / all : 0
+  const positive = all ? good / all : 0
+
+  const statistics = {
+    lines : [
+      {text: 'good', value: good},
+      {text: 'neutral', value: neutral},
+      {text: 'bad', value: bad},
+      {text: 'all', value: all},
+      {text: 'average', value: average},
+      {text: 'positive', value: positive*100 + ' %'}
+    ]
+  }
 
   return (
     <div>
@@ -40,14 +63,7 @@ const App = () => {
       <Button text="neutral" onClick={() => handleNeutralClick()}/>
       <Button text="bad" onClick={() => handleBadClick()}/>
 
-      <Header header="statistics"/>
-
-      <Statistic text="good" value={good}/> 
-      <Statistic text="neutral" value={neutral}/>
-      <Statistic text="bad" value={bad}/>
-      <Statistic text="all" value={all}/>
-      <Statistic text="average" value={average}/>
-      <Statistic text="positive" value={positive*100 + ' %'}/>
+      <Statistics statistics={statistics}/>
     </div>
   )
 }
