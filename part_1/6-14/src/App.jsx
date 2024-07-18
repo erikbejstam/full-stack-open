@@ -9,8 +9,7 @@ const StatisticLine = ({text, value}) => <div>{text} {value}</div>
 const Statistics = ({statistics}) => {
   const {lines} = statistics
 
-  const listItems  = lines.map(statisticLine => <StatisticLine key={statistic.text} text={statistic.text} value={statistic.value}/>)
-  console.log(lines[3].value)
+  const listItems  = lines.map(statistic => <StatisticLine key={statistic.text} text={statistic.text} value={statistic.value}/>)
   return(
     <div>
       <h1>statistics</h1>
