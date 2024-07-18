@@ -10,10 +10,14 @@ const Statistics = ({statistics}) => {
   const {lines} = statistics
 
   const listItems  = lines.map(statistic => <Statistic key={statistic.text} text={statistic.text} value={statistic.value}/>)
+  console.log(lines[3].value)
   return(
     <div>
       <h1>statistics</h1>
-      {listItems}
+      {lines[3].value ? 
+        listItems
+        : <div> No feedback given</div> 
+      }
     </div>
   )
 }
