@@ -23,10 +23,24 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
+    
+    const personAlreadyInPhonebook = persons.find(person => person.name === newName)
+    if (personAlreadyInPhonebook){
+      const msg = `${newName} is already in the phonebook. Replace the current number with new one?`
+      if (window.confirm(msg)){
+        const updatedPersonObject = {...personAlreadyInPhonebook, number: newNumber}
 
-    if (persons.some(person => person.name === newName)){
-      const msg = `${newName} is already in the phonebook`
-      alert(msg)
+        personService
+          .update(personAlreadyInPhonebook.id, updatedPersonObject)
+          .then(response => {
+            setPersons(persons.map(person =>
+              person.id !== personAlreadyInPhonebook.id ? person : response.data
+            ))
+          })
+          .catch(error => {
+            console.log('error: ', error)
+          })
+      }
     } else {
       const personObject = {
         name: newName,
