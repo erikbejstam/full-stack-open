@@ -14,10 +14,9 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
       })
   }, [])
@@ -34,10 +33,10 @@ const App = () => {
         number: newNumber
       }
 
-      axios
-        .post('http://localhost:3001/persons', personObject)
+      personService
+        .create(personObject)
         .then(response => {
-          console.log('personObj posted to server')
+          console.log('personObj (', personObject, ') posted to server')
           setPersons(persons.concat(personObject))
           setNewName('')
           setNewNumber('')
