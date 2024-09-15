@@ -37,7 +37,7 @@ const App = () => {
         .create(personObject)
         .then(response => {
           console.log('personObj (', personObject, ') posted to server')
-          setPersons(persons.concat(personObject))
+          setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
         })
@@ -56,6 +56,24 @@ const App = () => {
     setShowAll(false)
     setNewSearch(event.target.value)
   }
+
+  const handleDelete = (id) => {
+    const person = persons.find(p => p.id === id)
+
+    if (window.confirm(`Delete ${person.name}?`)){
+      personService
+        .deleteEntry(id)
+        .then(response => {
+          setPersons(persons.filter(p => p.id !== id))
+        }
+        )
+        .catch(error => {
+          console.log('Error: ', error)
+        })
+    }
+  }
+
+  console.log(persons)
 
   const formProps = {
     addPerson,
@@ -81,7 +99,7 @@ const App = () => {
       <PersonForm formProps={formProps}/>
 
       <h2>Numbers</h2>
-      <PersonList persons={personsToShow}/>
+      <PersonList persons={personsToShow} handleDelete={handleDelete}/>
     </div>
   )
 }
