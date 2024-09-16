@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import PersonList from './components/PersonList'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import axios from 'axios'
 import personService from './services/persons'
 
@@ -11,6 +12,11 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [successMsg, setSuccessMsg] = useState('hej')
+
+  const app = {
+    margin: '10px'
+  }
 
   useEffect(() => {
     console.log('effect')
@@ -37,6 +43,12 @@ const App = () => {
               person.id !== personAlreadyInPhonebook.id ? person : response.data
             ))
           })
+          .then(() => { 
+            setSuccessMsg(`Successfully updated ${newName}'s number`)
+            setTimeout(() => {
+              setSuccessMsg(null)
+            }, 5000)
+          })
           .catch(error => {
             console.log('error: ', error)
           })
@@ -50,10 +62,15 @@ const App = () => {
       personService
         .create(personObject)
         .then(response => {
-          console.log('personObj (', personObject, ') posted to server')
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
+        })
+        .then(() => {
+          setSuccessMsg(`Successfully added ${newName}`)
+          setTimeout(() => {
+            setSuccessMsg(null)
+          }, 5000)
         })
         .catch(error => {
           console.log('post request failed: ', error)
@@ -81,6 +98,12 @@ const App = () => {
           setPersons(persons.filter(p => p.id !== id))
         }
         )
+        .then(() => {
+          setSuccessMsg(`Successfully deleted ${person.name}`)
+          setTimeout(() => {
+            setSuccessMsg(null)
+          }, 5000);
+        })
         .catch(error => {
           console.log('Error: ', error)
         })
@@ -104,8 +127,10 @@ const App = () => {
     )
 
   return (
-    <div>
+    <div style={app}>
       <h2>Phonebook</h2>
+
+      <Notification msg={successMsg}></Notification>
 
       <Filter newSearch={newSearch} handleSearchChange={handleSearchChange} />
 
