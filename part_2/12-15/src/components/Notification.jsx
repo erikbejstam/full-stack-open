@@ -1,25 +1,22 @@
-const Notification = ({msg}) => {
-    const successMsg = { 
-        color: 'green',
-        font: '25px Times New Roman',
-        background: 'lightgrey',
-        borderStyle: 'solid',
-        borderColor: 'green',
-        borderRadius: '5px',
-        borderWidth: '3px',
-        padding: '10px',
-        marginBottom: '10px'
-    }
+const Notification = ({notification}) => {
+  if (!notification) return null
 
-    if (msg === null){
-        return null
-    }
+  let {msg, type} = notification
 
-    return (
-        <div style={successMsg}>
-          {msg}
-        </div>
-      )
+  const notificationStyle = {
+    font: '25px Times New Roman',
+    color: type === 'success' ? 'green' : 'red',
+    backgroundColor: 'lightgrey',
+    padding: '10px',
+    border: `3px solid ${type === 'success' ? 'green' : 'red'}`,
+    marginBottom: '10px',
+  }
+
+  return (
+      <div style={notificationStyle}>
+        {msg}
+      </div>
+    )
 }
 
 export default Notification

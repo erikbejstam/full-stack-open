@@ -12,7 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
   const [showAll, setShowAll] = useState(true)
-  const [successMsg, setSuccessMsg] = useState('hej')
+  const [notification, setNotification] = useState(null)
 
   const app = {
     margin: '10px'
@@ -44,13 +44,15 @@ const App = () => {
             ))
           })
           .then(() => { 
-            setSuccessMsg(`Successfully updated ${newName}'s number`)
+            setNotification({msg: `Successfully updated ${newName}'s number`, type: 'success'})
             setTimeout(() => {
-              setSuccessMsg(null)
+              setNotification(null)
             }, 5000)
           })
           .catch(error => {
-            console.log('error: ', error)
+            console.log('error updating: ', error)
+            setNotification({msg: `${newName}'s information has already been removed 
+              from the server`, type: 'fail'})
           })
       }
     } else {
@@ -67,13 +69,14 @@ const App = () => {
           setNewNumber('')
         })
         .then(() => {
-          setSuccessMsg(`Successfully added ${newName}`)
+          setNotification({msg: `Successfully added ${newName}`, type: 'success'})
           setTimeout(() => {
-            setSuccessMsg(null)
+            setNotification(null)
           }, 5000)
         })
         .catch(error => {
           console.log('post request failed: ', error)
+          setNotification({msg: `${newName} could not be entered into the phonebook`, type: 'fail'})
         }
         )
     }
@@ -99,13 +102,14 @@ const App = () => {
         }
         )
         .then(() => {
-          setSuccessMsg(`Successfully deleted ${person.name}`)
+          setNotification({msg: `Successfully deleted ${person.name}`, type: 'success'})
           setTimeout(() => {
-            setSuccessMsg(null)
+            setNotification(null)
           }, 5000);
         })
         .catch(error => {
           console.log('Error: ', error)
+          setNotification({msg: `Failed to delete ${person.name}`, type: 'fail'})
         })
     }
   }
@@ -130,7 +134,7 @@ const App = () => {
     <div style={app}>
       <h2>Phonebook</h2>
 
-      <Notification msg={successMsg}></Notification>
+      <Notification notification={notification} />
 
       <Filter newSearch={newSearch} handleSearchChange={handleSearchChange} />
 
