@@ -10,11 +10,13 @@ const SearchResult = ({searchResultObject}) => {
     let resultToRender = () => {
         switch(type) {
             case 'tooMany':
-                return <p>Too many, filter again</p>
+                return <p>Too many results, try another search term</p>
             case 'one':
                 return <Country country={searchResultArr[0]}/>
             case 'list':
                 return searchResultArr.map(country => <div key={country.name.official}>{country.name.common}</div>)
+            case 'none':
+                return <p>No country found</p>
         }
     }
 

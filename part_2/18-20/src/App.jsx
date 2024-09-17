@@ -9,6 +9,10 @@ function App() {
   const [search, setSearch] = useState('')
   const [searchResultObject, setSearchResultObject] = useState({searchResultArr: [], type: ''})
   
+  const app = {
+    margin: '10px'
+  }
+
   useEffect(() => {
     axios
       .get('https://studies.cs.helsinki.fi/restcountries/api/all')
@@ -33,15 +37,17 @@ function App() {
     } else if (filteredCountries.length > 1 ){
       setSearchResultObject({searchResultArr: filteredCountries, type: 'list'})
       setCountriesToShow(filteredCountries)
-    }
-    else {
+    } else if (filteredCountries.length == 0 ){
+      setSearchResultObject({searchResultArr: [], type: 'none'})
+      setCountriesToShow([])
+    } else {
       setSearchResultObject({searchResultArr: filteredCountries, type: 'one'})
       setCountriesToShow(filteredCountries)
     }
   }
 
   return (
-    <div>
+    <div style={app}>
       <div>
         find countries
         <input 
