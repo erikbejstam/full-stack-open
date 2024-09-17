@@ -1,34 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import SearchResult from './components/SearchResult'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [countries, setCountries] = useState([])
+  const [countriesToShow, setCountriesToShow] = useState([])
+  const [search, setSearch] = useState('')
+  const [searchResultObject, setSearchResultObject] = useState({searchResultArr: [], type: ''})
+  
+  useEffect(() => {
+    axios
+      .get('https://studies.cs.helsinki.fi/restcountries/api/all')
+      .then(response => {
+        setCountries(response.data)
+      })
+      .catch(error => 
+        console.log('error: ', error)
+      )
+  }, [])
+
+  const handleSearchChange = (event) => {
+    let searchValue = event.target.value
+    setSearch(searchValue)
+
+    let filteredCountries = countries.filter(country => 
+      country.name.common.toLowerCase().includes(searchValue.toLowerCase()))
+
+    if (filteredCountries.length > 10){
+      setSearchResultObject({searchResultArr: [], type: 'tooMany'})
+      setCountriesToShow([])
+    } else if (filteredCountries.length > 1 ){
+      setSearchResultObject({searchResultArr: filteredCountries, type: 'list'})
+      setCountriesToShow(filteredCountries)
+    }
+    else {
+      setSearchResultObject({searchResultArr: filteredCountries, type: 'one'})
+      setCountriesToShow(filteredCountries)
+    }
+  }
 
   return (
-    <>
+    <div>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        find countries
+        <input 
+          value={search}
+          onChange={handleSearchChange} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+
+      <SearchResult searchResultObject={searchResultObject}/>
+    </div>
   )
 }
 
