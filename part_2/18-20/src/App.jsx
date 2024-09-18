@@ -8,6 +8,7 @@ function App() {
   const [countriesToShow, setCountriesToShow] = useState([])
   const [search, setSearch] = useState('')
   const [searchResultObject, setSearchResultObject] = useState({searchResultArr: [], type: ''})
+  const [country, setCountry] = useState(null)
   
   const app = {
     margin: '10px'
@@ -32,18 +33,25 @@ function App() {
       country.name.common.toLowerCase().includes(searchValue.toLowerCase()))
 
     if (filteredCountries.length > 10){
+      setCountry(null)
       setSearchResultObject({searchResultArr: [], type: 'tooMany'})
       setCountriesToShow([])
     } else if (filteredCountries.length > 1 ){
+      setCountry(null)
       setSearchResultObject({searchResultArr: filteredCountries, type: 'list'})
       setCountriesToShow(filteredCountries)
     } else if (filteredCountries.length == 0 ){
+      setCountry(null)
       setSearchResultObject({searchResultArr: [], type: 'none'})
       setCountriesToShow([])
     } else {
       setSearchResultObject({searchResultArr: filteredCountries, type: 'one'})
-      setCountriesToShow(filteredCountries)
+      setCountry(filteredCountries[0])
     }
+  }
+
+  const handleShow = (country) => {
+    setCountry(country)
   }
 
   return (
@@ -55,7 +63,7 @@ function App() {
           onChange={handleSearchChange} />
       </div>
 
-      <SearchResult searchResultObject={searchResultObject}/>
+      <SearchResult searchResultObject={searchResultObject} country={country} handleShow={handleShow}/>
     </div>
   )
 }

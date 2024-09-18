@@ -1,4 +1,6 @@
 const Country = ({country}) => {
+    if (!country) return null
+
     const languages = Object.values(country.languages)
 
     return(

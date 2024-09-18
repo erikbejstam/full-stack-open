@@ -1,8 +1,6 @@
 import Country from './Country'
 
-const SearchResult = ({searchResultObject}) => {
-    //console.log('in searchRes')
-    //console.log('object: ', searchResultObject)
+const SearchResult = ({searchResultObject, handleShow, country}) => {
     if (!searchResultObject) return 
     
     const {searchResultArr, type} = searchResultObject
@@ -12,9 +10,20 @@ const SearchResult = ({searchResultObject}) => {
             case 'tooMany':
                 return <p>Too many results, try another search term</p>
             case 'one':
-                return <Country country={searchResultArr[0]}/>
+                return null
             case 'list':
-                return searchResultArr.map(country => <div key={country.name.official}>{country.name.common}</div>)
+                return (
+                    <div>
+                        {searchResultArr.map(country => {
+                            return(
+                                <div key={country.name.official}>
+                                    {country.name.common}
+                                    <button onClick={() => handleShow(country)}>show</button>
+                                </div>
+                            )
+                        })}
+                    </div>
+                )
             case 'none':
                 return <p>No country found</p>
         }
@@ -23,6 +32,7 @@ const SearchResult = ({searchResultObject}) => {
     return(
         <div>
             {resultToRender()}
+            <Country country={country}/>
         </div>
     )
 }
