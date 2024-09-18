@@ -1,40 +1,35 @@
 import Country from './Country'
 
-const SearchResult = ({searchResultObject, handleShow, country}) => {
-    if (!searchResultObject) return 
-    
-    const {searchResultArr, type} = searchResultObject
+const SearchResult = ({ countriesToShow, handleShow, country }) => {
+  const { arr, type } = countriesToShow
 
-    let resultToRender = () => {
-        switch(type) {
-            case 'tooMany':
-                return <p>Too many results, try another search term</p>
-            case 'one':
-                return null
-            case 'list':
-                return (
-                    <div>
-                        {searchResultArr.map(country => {
-                            return(
-                                <div key={country.name.official}>
-                                    {country.name.common}
-                                    <button onClick={() => handleShow(country)}>show</button>
-                                </div>
-                            )
-                        })}
-                    </div>
-                )
-            case 'none':
-                return <p>No country found</p>
-        }
-    }
+  const searchResult = (() => {
+    switch (type) {
+      case 'tooMany':
+        return <p>Too many results, try another search term</p>;
+  
+      case 'none':
+        return <p>No country found</p>;
+  
+      case 'list':
+        return (
+          <div>
+            {arr.map((country) => (
+              <div key={country.name.official}>
+                {country.name.common}
+                <button onClick={() => handleShow(country)}>show</button>
+              </div>
+            ))}
+          </div>
+        );
+    }})
 
-    return(
-        <div>
-            {resultToRender()}
-            <Country country={country}/>
-        </div>
-    )
+  return (
+    <div>
+        {searchResult()}
+        {country ? <Country country={country} /> : null}
+    </div>
+  )
 }
 
 export default SearchResult

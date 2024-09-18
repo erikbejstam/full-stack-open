@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import SearchResult from './components/SearchResult'
+import './App.css'
 
 
 function App() {
   const [countries, setCountries] = useState([])
-  const [countriesToShow, setCountriesToShow] = useState([])
   const [search, setSearch] = useState('')
-  const [searchResultObject, setSearchResultObject] = useState({searchResultArr: [], type: ''})
+  const [countriesToShow, setCountriesToShow] = useState({arr: [], type: ''})
   const [country, setCountry] = useState(null)
-  
-  const app = {
-    margin: '10px'
-  }
 
   useEffect(() => {
     axios
@@ -34,19 +30,16 @@ function App() {
 
     if (filteredCountries.length > 10){
       setCountry(null)
-      setSearchResultObject({searchResultArr: [], type: 'tooMany'})
-      setCountriesToShow([])
+      setCountriesToShow({arr: [], type: 'tooMany'})
     } else if (filteredCountries.length > 1 ){
       setCountry(null)
-      setSearchResultObject({searchResultArr: filteredCountries, type: 'list'})
-      setCountriesToShow(filteredCountries)
+      setCountriesToShow({arr: filteredCountries, type: 'list'})
     } else if (filteredCountries.length == 0 ){
       setCountry(null)
-      setSearchResultObject({searchResultArr: [], type: 'none'})
-      setCountriesToShow([])
+      setCountriesToShow({arr: [], type: 'none'})
     } else {
-      setSearchResultObject({searchResultArr: filteredCountries, type: 'one'})
       setCountry(filteredCountries[0])
+      setCountriesToShow({arr: filteredCountries, type: 'one'})
     }
   }
 
@@ -54,8 +47,10 @@ function App() {
     setCountry(country)
   }
 
+  console.log('country selected: ', country)
+
   return (
-    <div style={app}>
+    <div className='app'>
       <div>
         find countries
         <input 
@@ -63,7 +58,7 @@ function App() {
           onChange={handleSearchChange} />
       </div>
 
-      <SearchResult searchResultObject={searchResultObject} country={country} handleShow={handleShow}/>
+      <SearchResult countriesToShow={countriesToShow} country={country} handleShow={handleShow}/>
     </div>
   )
 }

@@ -1,4 +1,5 @@
 const Country = ({country}) => {
+    console.log('country ', country)
     if (!country) return null
 
     const languages = Object.values(country.languages)
