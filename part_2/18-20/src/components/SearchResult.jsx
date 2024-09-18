@@ -17,7 +17,7 @@ const SearchResult = ({ countriesToShow, handleShow, country }) => {
             {arr.map((country) => (
               <div key={country.name.official}>
                 {country.name.common}
-                <button onClick={() => handleShow(country)}>show</button>
+                <button onClick={() => handleShow(country)} style={{ padding: '2px 5px' }}>show</button>
               </div>
             ))}
           </div>

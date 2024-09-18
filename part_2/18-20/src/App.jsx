@@ -47,8 +47,6 @@ function App() {
     setCountry(country)
   }
 
-  console.log('country selected: ', country)
-
   return (
     <div className='app'>
       <div>

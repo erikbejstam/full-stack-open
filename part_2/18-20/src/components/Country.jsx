@@ -1,5 +1,6 @@
+import Weather from './Weather'
+
 const Country = ({country}) => {
-    console.log('country ', country)
     if (!country) return null
 
     const languages = Object.values(country.languages)
@@ -8,8 +9,10 @@ const Country = ({country}) => {
         <div>
             <h2>{country.name.common}</h2>
 
-            <p>capital {country.capital}</p>
-            <p>area {country.area}</p>
+            <p>
+                capital {country.capital} <br />
+                area {country.area}
+            </p>
 
             <h3>Languages</h3>
         
@@ -17,7 +20,9 @@ const Country = ({country}) => {
                 {languages.map(language => <li key={language}>{language}</li>)}
             </ul>
 
-            <img src={country.flags.png}></img>
+            <img src={country.flags.png} alt='flag' style={{ maxHeight: '100px' }}></img>
+
+            <Weather country={country} />
         </div>
     )
 }
