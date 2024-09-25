@@ -2,7 +2,14 @@ const express = require('express')
 const app = express()
 var morgan = require('morgan')
 app.use(express.json())
-app.use(morgan('tiny'))
+
+morgan.token('body', (req) => {
+    return JSON.stringify(req.body)
+})
+
+app.use(
+    morgan(':method :url :status :res[content-length] - :response-time ms - :body')
+)
 
 let persons = [
     { 
@@ -66,9 +73,9 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    const numberAlreadyInPhonebook = () => persons.find(p => p.name === body.name)
+    const existingPerson = persons.find(p => p.name === body.name)
 
-    if (numberAlreadyInPhonebook){
+    if (existingPerson){
         return response.status(400).json({
             error: 'name is already in phonebook'
         })
