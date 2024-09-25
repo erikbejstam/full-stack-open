@@ -55,6 +55,22 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({
             error: 'content missing'
         })
+    } else if(!body.name){
+        return response.status(400).json({
+            error: 'name missing'
+        })
+    } else if(!body.number){
+        return response.status(400).json({
+            error: 'number missing'
+        })
+    }
+
+    const numberAlreadyInPhonebook = () => persons.find(p => p.name === body.name)
+
+    if (numberAlreadyInPhonebook){
+        return response.status(400).json({
+            error: 'name is already in phonebook'
+        })
     }
 
     const person = {
